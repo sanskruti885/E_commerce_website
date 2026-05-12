@@ -1,3 +1,3 @@
-const API_BASE = "http://4.240.91.254:3000/api";
+const API_BASE = "http://57.158.24.49:5001/api";
 
 export default API_BASE;
