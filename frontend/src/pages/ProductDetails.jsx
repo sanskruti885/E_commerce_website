@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
-
+import API_BASE from '../api';
 function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -10,7 +10,7 @@ function ProductDetails() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://localhost:5001/api/products/${id}`);
+        const res = await axios.get(`${API_BASE}/products/${id}`);
         setProduct(res.data);
       } catch (err) {
         console.error('Error fetching product', err);

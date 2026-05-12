@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API_BASE from '../api';
 
 function Admin() {
   const [products, setProducts] = useState([]);
@@ -10,6 +11,11 @@ function Admin() {
 
   const token = localStorage.getItem('token');
 
+  const fetchProducts = async () => {
+    const res = await axios.get(`${API_BASE}/products`);
+    setProducts(res.data);
+  };
+  
   useEffect(() => {
     if (!token) {
       navigate('/login');
@@ -18,10 +24,7 @@ function Admin() {
     fetchProducts();
   }, [token, navigate]);
 
-  const fetchProducts = async () => {
-    const res = await axios.get('http://localhost:5001/api/products');
-    setProducts(res.data);
-  };
+  
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,9 +35,9 @@ function Admin() {
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       if (editingId) {
-        await axios.put(`http://localhost:5001/api/products/${editingId}`, formData, config);
+        await axios.put(`${API_BASE}/products/${editingId}`, formData, config);
       } else {
-        await axios.post('http://localhost:5001/api/products', formData, config);
+        await axios.post(`${API_BASE}/products`, formData, config);
       }
       setFormData({ name: '', price: '', category: '', image: '', description: '' });
       setEditingId(null);
@@ -53,7 +56,7 @@ function Admin() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure?')) return;
     try {
-      await axios.delete(`http://localhost:5001/api/products/${id}`, {
+      await axios.delete(`${API_BASE}/products/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchProducts();

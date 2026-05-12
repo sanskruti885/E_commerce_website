@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
-
+import API_BASE from '../api';
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +9,7 @@ function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get('http://localhost:5001/api/products');
+        const res = await axios.get(`${API_BASE}/products`);
         setProducts(res.data);
       } catch (err) {
         console.error('Error fetching products', err);
